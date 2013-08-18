@@ -1,17 +1,20 @@
-bip-pod-dropbox
+![Dropbox](dropbox.png) bip-pod-dropbox
 =======
 
-Dropbox Pod for Bipio.  
+[Dropbox](https://www.dropbox.com/) pod for [bipio](https://bip.io).  
+
 
 ## Installation
 
-From bipio server install directory
+From bipio server root directory
 
     npm install bip-pod-dropbox
+    ./tools/pod-install.js -a dropbox [-u optional account-wide channel auto install]
 
-Auto install script will register the pod with the bipio server and add sparse
+The pod-install script is a server script which will register the pod with the bipio server and add sparse
 configuration to your NODE_ENV environment config ('default.json', staging or production)
-keyed to 'dropbox'.
+keyed to 'dropbox', based on the default config in the pod constructor.  It will also move the
+pod icon into the server cdn
 
 Manually restart the bipio server at your convenience.
 

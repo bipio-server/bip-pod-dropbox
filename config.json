@@ -1,0 +1,10 @@
+/* 
+ * Dropbox sparse config
+ */
+{
+    "oauth": {
+        "consumerKey" : "",
+        "consumerSecret" : "",
+        "sandbox" : true
+    }
+}

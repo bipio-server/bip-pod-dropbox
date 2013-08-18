@@ -22,7 +22,14 @@ var Pod = require('bip-pod'),
     Dropbox = new Pod({
         name : 'dropbox',
         description : 'Dropbox',
-        authType : 'oauth'
+        authType : 'oauth',
+        config : {
+            "oauth": {
+                "consumerKey" : "",
+                "consumerSecret" : "",
+                "sandbox" : true
+            }
+        }
     });
 
 Dropbox.add(require('./generate_link.js'));

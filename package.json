@@ -10,10 +10,10 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git://github.com/cloudspark/bip-pod-dropbox.git"
+        "url": "git://github.com/bipio-server/bip-pod-dropbox.git"
     },
     "bugs": {
-        "url": "http://github.com/cloudspark/bip-pod-dropbox/issues"
+        "url": "http://github.com/bipio-server/bip-pod-dropbox/issues"
     },
     "licenses": [
     {

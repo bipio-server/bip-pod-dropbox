@@ -3,7 +3,6 @@
 
 [Dropbox](https://www.dropbox.com/) pod for [bipio](https://bip.io).  
 
-
 ## Installation
 
 From bipio server root directory

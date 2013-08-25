@@ -93,8 +93,8 @@ GenerateLink.prototype.invoke = function(imports, channel, sysImports, contentPa
         });
 
     client.setCredentials({
-        token : sysImports._oauth_token,
-        tokenSecret : sysImports._oauth_token_secret
+        token : sysImports.auth.oauth.token,
+        tokenSecret : sysImports.auth.oauth.secret
     });
 
     var opts = {

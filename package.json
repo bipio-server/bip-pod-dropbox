@@ -1,6 +1,7 @@
 {
   "name": "bip-pod-dropbox",
-  "version": "0.0.2",
+  "author" : "Michael Pearson",
+  "version": "0.0.3",
   "description": "Dropbox Pod for Bipio",
   "keywords": [
     "bip",

@@ -43,6 +43,11 @@ SaveFile.prototype.getSchema = function() {
                 "base_dir" : {
                     type : "string",
                     description : "Base Directory" // templated path via imports
+                },
+                "overwrite" : {
+                    type : "boolean",
+                    description : "Overwrite Files",
+                    "default" : false
                 }
             }
         },
@@ -135,7 +140,7 @@ SaveFile.prototype.invoke = function(imports, channel, sysImports, contentParts,
                         }
 
                         // skip if found
-                        if (!found) {
+                        if (!found || app.helper.isTrue(channel.config.overwrite)) {
                             fs.stat(fileContext.localpath, function(error, stats) {
                                 fs.open(fileContext.localpath, "r", function(error, fd) {
                                     var buffer = new Buffer(stats.size);

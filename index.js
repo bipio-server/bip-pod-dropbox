@@ -22,7 +22,7 @@ var Pod = require('bip-pod'),
     Dropbox = new Pod({
         name : 'dropbox',
         title : 'Dropbox',
-        description : 'Dropbox is a file hosting service operated by Dropbox, Inc., that offers cloud storage, file synchronization, and client software.',
+        description : '<a href="https://dropbox.com" target="_blank">Dropbox</a> is a file hosting service operated by Dropbox, Inc., that offers cloud storage, file synchronization, and client software.',
         authType : 'oauth',
         passportStrategy : require('passport-dropbox').Strategy,
         config : {

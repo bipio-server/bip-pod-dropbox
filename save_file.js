@@ -22,8 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-var dbox = require('dropbox'),
-    fs = require('fs');
+var dbox = require('dropbox');
 
 function SaveFile(podConfig) {
     this.name = 'save_file';
@@ -91,6 +90,7 @@ SaveFile.prototype.getSchema = function() {
  */
 SaveFile.prototype.invoke = function(imports, channel, sysImports, contentParts, next) {
     var exports = {}, numFiles = contentParts._files.length, dirPfx = '', self = this,
+        $resource = this.$resource,
         log = this.$resource.log;
 
     log('Invoking ', channel);
@@ -123,7 +123,7 @@ SaveFile.prototype.invoke = function(imports, channel, sysImports, contentParts,
             file.pathed = dirPfx + file.name;
 
             // search for file in remote, skip if exists
-            client.findByName(dirPfx, file.name, function(fileContext, contentParts) {
+            client.findByName(dirPfx, file.name, (function(fileContext, contentParts) {
                 var self = client;
                 return function(err, stats) {
                     if (err) {
@@ -141,35 +141,34 @@ SaveFile.prototype.invoke = function(imports, channel, sysImports, contentParts,
 
                         // skip if found
                         if (!found || app.helper.isTrue(channel.config.overwrite)) {
-                            fs.stat(fileContext.localpath, function(error, stats) {
-                                fs.open(fileContext.localpath, "r", function(error, fd) {
-                                    var buffer = new Buffer(stats.size);
-                                    fs.read(fd, buffer, 0, buffer.length, null, function(error, bytesRead, buffer) {
+
+                            $resource.file.get(fileContext, function(err, fileStruct, readStream) {
+                                var buffers = [];
+                                readStream.on('data', function(chunk) {
+                                    buffers.push(chunk);
+                                });
+
+                                readStream.on('error', function(err) {
+                                    next(err);
+                                });
+
+                                readStream.on('end', function() {
+                                    var b = Buffer.concat(buffers);
+                                    log('writing ' + b.length + ' bytes ' + fileStruct.pathed, channel, sysImports);
+                                    self.writeFile(fileStruct.pathed, b, function(error, stat)  {
                                         if (error) {
-                                            log(error, channel, 'error');
+                                            log(error, channel, sysImports, 'error');
+                                        } else {
+                                            log('Wrote ' + stat.path, channel, sysImports);
                                         }
-
-                                        //var data = buffer.toString("utf8", 0, buffer.length);
-                                        fs.close(fd);
-
-                                        log('writing ' + buffer.length + ' bytes ' + fileContext.pathed, channel, sysImports);
-
-                                        self.writeFile(fileContext.pathed, buffer, function(error, stat)  {
-                                            if (error) {
-                                                log(error, channel, sysImports, 'error');
-                                            } else {
-                                                log('Wrote ' + stat.path, channel, sysImports);
-                                            }
-
-                                            next(error, stat, contentParts);
-                                        });
+                                        next(error, stat, contentParts);
                                     });
                                 });
                             });
                         }
                     }
                 }
-            }(file, contentParts));
+            })(file, contentParts));
         }
     } else {
         // silent passthrough

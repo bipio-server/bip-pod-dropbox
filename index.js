@@ -19,23 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 var Pod = require('bip-pod'),
-    Dropbox = new Pod({
-        name : 'dropbox',
-        title : 'Dropbox',
-        description : '<a href="https://dropbox.com" target="_blank">Dropbox</a> is a file hosting service operated by Dropbox, Inc., that offers cloud storage, file synchronization, and client software.',
-        authType : 'oauth',
-        passportStrategy : require('passport-dropbox').Strategy,
-        config : {
-            "oauth": {
-                "consumerKey" : "",
-                "consumerSecret" : "",
-                "sandbox" : true
-            }
-        }
+    Dropbox = new Pod(),
+    dbox = require('dropbox');
+
+Dropbox.getClient = function(sysImports) {
+    var podConfig = this.getConfig();
+
+    var client = new dbox.Client({
+        key: sysImports.auth.oauth.consumerKey || podConfig.oauth.consumerKey,
+        secret: sysImports.auth.oauth.consumerSecret || podConfig.oauth.consumerSecret,
+        sandbox: sysImports.auth.oauth.sandbox || podConfig.oauth.sandbox
     });
 
-Dropbox.add(require('./generate_link.js'));
-Dropbox.add(require('./save_file.js'));
+    client.setCredentials({
+        token : sysImports.auth.oauth.token,
+        tokenSecret : sysImports.auth.oauth.secret
+    });
+
+    return client;
+}
 
 // -----------------------------------------------------------------------------
 module.exports = Dropbox;

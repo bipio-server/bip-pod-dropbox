@@ -23,25 +23,10 @@ var Pod = require('bip-pod'),
     dbox = require('dropbox');
 
 Dropbox.getClient = function(sysImports) {
-    var podConfig = this.getConfig();
-
-    var sandbox = (undefined !== sysImports.auth.oauth.sandbox)
-            ? sysImports.auth.oauth.sandbox
-            : podConfig.oauth.sandbox,
-
-        consumerKey = (undefined !== sysImports.auth.oauth.consumerKey)
-            ? sysImports.auth.oauth.consumerKey
-            : podConfig.oauth.consumerKey,
-
-        consumerSecret = (undefined !== sysImports.auth.oauth.consumerSecret)
-            ? sysImports.auth.oauth.consumerSecret
-            : podConfig.oauth.consumerSecret;
-
-
     var client = new dbox.Client({
-        sandbox: sandbox,
-        secret : consumerSecret,
-        key : consumerKey
+        sandbox: sysImports.auth.oauth.sandbox,
+        secret : sysImports.auth.oauth.consumerSecret,
+        key : sysImports.auth.oauth.consumerKey
     });
 
     client.setCredentials({

@@ -12,7 +12,30 @@
     }
   },
   "auth": {
-    "strategy": "oauth"
+    "strategy": "oauth",
+    "properties" : {
+      "access_token" : {
+        "type" : "string",
+        "title" : "Access Token"
+      },
+      "secret" : {
+        "type" : "string",
+        "title" : "Token Secret"
+      },
+      "consumerKey" : {
+        "type" : "string",
+        "title" : "Consumer Key"
+      },
+      "consumerSecret" : {
+        "type" : "string",
+        "title" : "Consumer Secret"
+      },
+      "sandbox" : {
+        "type" : "boolean",
+        "title" : "Sandbox Mode"
+      }
+    },
+    "disposition" : [ "access_token", "secret", "consumerKey", "consumerSecret", "sandbox" ]
   },
   "rpcs": {},
   "actions": {

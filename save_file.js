@@ -72,31 +72,34 @@ SaveFile.prototype.invoke = function(imports, channel, sysImports, contentParts,
 
                         // skip if found
                         if (!found || app.helper.isTrue(channel.config.overwrite)) {
-
                             $resource.file.get(fileContext, function(err, fileStruct, readStream) {
-                                var buffers = [];
-                                readStream.on('data', function(chunk) {
-                                    buffers.push(chunk);
-                                });
-
-                                readStream.on('error', function(err) {
+                                if (err) {
                                     next(err);
-                                });
-
-                                fileStruct.pathed = dirPfx + file.name;
-
-                                readStream.on('end', function() {
-                                    var b = Buffer.concat(buffers);
-                                    log('writing ' + b.length + ' bytes ' + fileStruct.pathed, channel, sysImports);
-                                    self.writeFile(fileStruct.pathed, b, function(error, stat)  {
-                                        if (error) {
-                                            log(error, channel, sysImports, 'error');
-                                        } else {
-                                            log('Wrote ' + stat.path, channel, sysImports);
-                                        }
-                                        next(error, stat, contentParts);
+                                } else {
+                                    var buffers = [];
+                                    readStream.on('data', function(chunk) {
+                                        buffers.push(chunk);
                                     });
-                                });
+
+                                    readStream.on('error', function(err) {
+                                        next(err);
+                                    });
+
+                                    fileStruct.pathed = dirPfx + file.name;
+
+                                    readStream.on('end', function() {
+                                        var b = Buffer.concat(buffers);
+                                        log('writing ' + b.length + ' bytes ' + fileStruct.pathed, channel, sysImports);
+                                        self.writeFile(fileStruct.pathed, b, function(error, stat)  {
+                                            if (error) {
+                                                log(error, channel, sysImports, 'error');
+                                            } else {
+                                                log('Wrote ' + stat.path, channel, sysImports);
+                                            }
+                                            next(error, stat, contentParts);
+                                        });
+                                    });
+                                }
                             });
                         }
                     }

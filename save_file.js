@@ -52,7 +52,6 @@ SaveFile.prototype.invoke = function(imports, channel, sysImports, contentParts,
 
         for (var i = 0; i < numFiles; i++) {
             file = contentParts._files[i];
-            file.pathed = dirPfx + file.name;
 
             // search for file in remote, skip if exists
             client.findByName(dirPfx, file.name, (function(fileContext, contentParts) {
@@ -83,6 +82,8 @@ SaveFile.prototype.invoke = function(imports, channel, sysImports, contentParts,
                                 readStream.on('error', function(err) {
                                     next(err);
                                 });
+
+                                fileStruct.pathed = dirPfx + file.name;
 
                                 readStream.on('end', function() {
                                     var b = Buffer.concat(buffers);

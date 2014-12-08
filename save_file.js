@@ -71,7 +71,7 @@ SaveFile.prototype.invoke = function(imports, channel, sysImports, contentParts,
                         }
 
                         // skip if found
-                        if (!found || app.helper.isTrue(channel.config.overwrite)) {
+                        if (!found || $resource.helper.isTruthy(channel.config.overwrite)) {
                             $resource.file.get(fileContext, function(err, fileStruct, readStream) {
                                 if (err) {
                                     next(err);

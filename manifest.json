@@ -54,13 +54,13 @@
         "properties": {
           "direct_link": {
             "type": "boolean",
-            "description": "Generate a Direct Link to File, no Preview",
-            "default": false
+            "default": false,
+            "title": "Generate a Direct Link to File, no Preview"
           },
           "short": {
             "type": "boolean",
-            "description": "Use Link Shortener",
-            "default": true
+            "default": true,
+            "title": "Use Link Shortener"
           }
         },
         "disposition": [
@@ -72,19 +72,19 @@
         "properties": {
           "url": {
             "type": "string",
-            "description": "URL of File"
+            "title": "URL of File"
           },
           "expires_at": {
             "type": "string",
-            "description": "Expiry Date"
+            "title": "Expiry Date"
           },
           "is_direct": {
             "type": "string",
-            "description": "Is a Direct Link to the File"
+            "title": "Is a Direct Link to the File"
           },
           "is_preview": {
             "type": "boolean",
-            "description": "Link is to Preview page"
+            "title": "Link is to Preview page"
           }
         }
       },
@@ -92,7 +92,7 @@
         "properties": {
           "path": {
             "type": "string",
-            "description": "File Path"
+            "title": "File Path"
           }
         },
         "required": [
@@ -112,12 +112,12 @@
         "properties": {
           "base_dir": {
             "type": "string",
-            "description": "Base Directory"
+            "title": "Base Directory"
           },
           "overwrite": {
             "type": "boolean",
-            "description": "Overwrite Files",
-            "default": false
+            "default": false,
+            "title": "Overwrite Files"
           }
         },
         "disposition": [
@@ -129,23 +129,23 @@
         "properties": {
           "path": {
             "type": "string",
-            "description": "File Path"
+            "title": "File Path"
           },
           "name": {
             "type": "string",
-            "description": "File Name"
+            "title": "File Name"
           },
           "size": {
             "type": "integer",
-            "description": "Size in Bytes"
+            "title": "Size in Bytes"
           },
           "human_size": {
             "type": "string",
-            "description": "Friendly Size"
+            "title": "Friendly Size"
           },
           "mime_type": {
             "type": "string",
-            "description": "File Mime Type"
+            "title": "File Mime Type"
           }
         }
       },
@@ -153,7 +153,7 @@
         "properties": {
           "base_dir": {
             "type": "string",
-            "description": "Base Directory"
+            "title": "Base Directory"
           }
         },
         "disposition": [

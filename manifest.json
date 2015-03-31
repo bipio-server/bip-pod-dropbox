@@ -4,6 +4,7 @@
   "description": "Dropbox is a file hosting service operated by Dropbox, Inc., that offers cloud storage, file synchronization, and client software.",
   "url": "https://dropbox.com",
   "trackDuplicates": false,
+  "rateLimit" : 1,
   "config": {
     "oauth": {
       "consumerKey": "",

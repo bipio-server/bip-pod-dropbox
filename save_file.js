@@ -52,59 +52,67 @@ SaveFile.prototype.invoke = function(imports, channel, sysImports, contentParts,
 
         for (var i = 0; i < numFiles; i++) {
             file = contentParts._files[i];
-
-            // search for file in remote, skip if exists
-            client.findByName(dirPfx, file.name, (function(fileContext, contentParts) {
-                var self = client;
-                return function(err, stats) {
-                    if (err) {
-                        log(err, channel, 'error');
-                        next(err, {});
-                    } else {
-                        var numFiles = stats.length, found = false;
-                        for (var i = 0; i <  numFiles; i++) {
-                            found = fileContext.name == stats[i].name;
-                            if (found) {
-                                next(err, stats[i], contentParts);
-                                break;
-                            }
-                        }
-
-                        // skip if found
-                        if (!found || $resource.helper.isTruthy(channel.config.overwrite)) {
-                            $resource.file.get(fileContext, function(err, fileStruct, readStream) {
+            self.pod.limitRate(
+                channel,
+                (function(fileContext, self) {
+                    return function() {
+                        // search for file in remote, skip if exists
+                        client.findByName(
+                            dirPfx,
+                            fileContext.name,
+                            function(err, stats) {
                                 if (err) {
-                                    next(err);
+                                    log(err, channel, 'error');
+                                    next(err, {});
+
                                 } else {
-                                    var buffers = [];
-                                    readStream.on('data', function(chunk) {
-                                        buffers.push(chunk);
-                                    });
+                                    var numFiles = stats.length, found = false;
+                                    for (var i = 0; i <  numFiles; i++) {
+                                        found = fileContext.name == stats[i].name;
+                                        if (found) {
+                                            next(err, stats[i]);
+                                            break;
+                                        }
+                                    }
 
-                                    readStream.on('error', function(err) {
-                                        next(err);
-                                    });
-
-                                    fileStruct.pathed = dirPfx + file.name;
-
-                                    readStream.on('end', function() {
-                                        var b = Buffer.concat(buffers);
-                                        log('writing ' + b.length + ' bytes ' + fileStruct.pathed, channel, sysImports);
-                                        self.writeFile(fileStruct.pathed, b, function(error, stat)  {
-                                            if (error) {
-                                                log(error, channel, sysImports, 'error');
+                                    // skip if found
+                                    if (!found || $resource.helper.isTruthy(channel.config.overwrite)) {
+                                        $resource.file.get(fileContext, function(err, fileStruct, readStream) {
+                                            if (err) {
+                                                next(err);
                                             } else {
-                                                log('Wrote ' + stat.path, channel, sysImports);
+                                                var buffers = [];
+                                                readStream.on('data', function(chunk) {
+                                                    buffers.push(chunk);
+                                                });
+
+                                                readStream.on('error', function(err) {
+                                                    next(err);
+                                                });
+
+                                                fileStruct.pathed = dirPfx + fileContext.name;
+
+                                                readStream.on('end', function() {
+                                                    var b = Buffer.concat(buffers);
+                                                    log('writing ' + b.length + ' bytes ' + fileStruct.pathed, channel, sysImports);
+                                                    client.writeFile(fileStruct.pathed, b, function(error, stat)  {
+                                                        if (error) {
+                                                            log(error, channel, sysImports, 'error');
+                                                        } else {
+                                                            log('Wrote ' + stat.path, channel, sysImports);
+                                                        }
+                                                        next(error, stat);
+                                                    });
+                                                });
                                             }
-                                            next(error, stat, contentParts);
                                         });
-                                    });
+                                    }
                                 }
-                            });
-                        }
+                            }
+                        );
                     }
-                }
-            })(file, contentParts));
+                })(file, self)
+            );
         }
     }
 }

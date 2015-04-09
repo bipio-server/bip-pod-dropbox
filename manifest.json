@@ -3,7 +3,7 @@
   "title": "Dropbox",
   "description": "Dropbox is a file hosting service operated by Dropbox, Inc., that offers cloud storage, file synchronization, and client software.",
   "url": "https://dropbox.com",
-  "trackDuplicates": false,
+  "trackDuplicates": true,
   "rateLimit" : 1,
   "config": {
     "oauth": {
@@ -102,6 +102,47 @@
         "disposition": [
           "path"
         ]
+      }
+    },
+     "get_folder_files": {
+      "title": "Get Folder Files",
+      "description": "Get Folder Files",
+      "doc_ref": "https://www.dropbox.com/developers/core/docs#shares",
+      "trigger": "poll",
+      "config": {
+        "properties": {
+         "directory": {
+            "type": "string",
+            "title": "Folder Path"
+          }
+        },
+        "disposition": [
+        	"directory"
+        ]
+      },
+      "exports": {
+        "properties": {
+        	"path": {
+              "type": "string",
+              "title": "File Path"
+            },
+            "name": {
+              "type": "string",
+              "title": "File Name"
+            },
+            "humanSize": {
+              "type": "string",
+              "title": "File Size"
+            },
+            "mimeType": {
+               "type": "string",
+           	   "title": "File Mime Type"
+          	}
+        }
+      },
+      "imports": {
+        "properties": {
+        }
       }
     },
     "save_file": {

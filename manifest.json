@@ -18,7 +18,7 @@
       "access_token": {
         "type": "string",
         "title": "Access Token"
-      }, 
+      },
       "secret": {
         "type": "string",
         "title": "Token Secret"
@@ -104,9 +104,9 @@
         ]
       }
     },
-     "get_folder_files": {
-      "title": "Get Folder Files",
-      "description": "Get Folder Files",
+     "on_new_file": {
+      "title": "On A New File",
+      "description": "Triggers When A New File Appears In A Dropbox Folder",
       "doc_ref": "https://www.dropbox.com/developers/core/docs#shares",
       "trigger": "poll",
       "config": {
@@ -132,11 +132,11 @@
             },
             "humanSize": {
               "type": "string",
-              "title": "File Size"
+              "title": "Size (bytes)"
             },
             "mimeType": {
                "type": "string",
-           	   "title": "File Mime Type"
+           	   "title": "Mime Type"
           	}
         }
       },

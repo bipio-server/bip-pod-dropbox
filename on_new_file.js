@@ -16,17 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-function GetFolderFiles() {}
+function OnNewFile() {}
 
-GetFolderFiles.prototype = {};
- 
+OnNewFile.prototype = {};
+
 /**
  * Invokes (runs) the action.
  */
-GetFolderFiles.prototype.invoke = function(imports, channel, sysImports, contentParts, next) {
+OnNewFile.prototype.invoke = function(imports, channel, sysImports, contentParts, next) {
     var $resource = this.$resource;
     var client = this.pod.getClient(sysImports);
-    
+
     var config = channel.getConfig();
     var options = { readDir: true };
     var path = "/";
@@ -46,9 +46,9 @@ GetFolderFiles.prototype.invoke = function(imports, channel, sysImports, content
        	    }
            }
        }
-  	
+
 	})
 }
 
 // -----------------------------------------------------------------------------
-module.exports = GetFolderFiles;
+module.exports = OnNewFile;

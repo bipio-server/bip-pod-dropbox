@@ -55,6 +55,23 @@ OnNewFile.prototype.trigger = function(imports, channel, sysImports, contentPart
   });
 }
 
+OnNewFile.prototype.discoverFiles = function(client, rootPath, next) {
+  var self = this;
+  client.stat(rootPath, { readDir: true }, function(error, stat, entries) {
+    if (error) {
+      next(error);
+    } else {
+      for (var i = 0; i < entries.length; i++) {
+        if ( entries[i].isFile ) {
+          next(false, entries[i]);
+        } else {
+          self.discoverFiles(client, entries[i].path, next);
+        }
+      }
+    }
+  });
+}
+
 /**
  * Invokes (runs) the action.
  */
@@ -63,28 +80,14 @@ OnNewFile.prototype.invoke = function(imports, channel, sysImports, contentParts
     var client = this.pod.getClient(sysImports);
 
     var config = channel.getConfig();
-    var options = { readDir: true };
+
     var path = "/";
 
     if(config.directory){
     	path = path + config.directory;
     }
 
-    client.stat(path, options, function(error, stat, entries) {
-
-  	  if (error) {
-  		  next(error);
-  	  }
-
-      if (entries && entries.length > 0) {
-        for (var i = 0; i < entries.length; i++) {
-     	    if ( entries[i].isFile ) {
-            next(false, entries[i]);
-     	    }
-        }
-     }
-
-	})
+    this.discoverFiles(client, path, next);
 }
 
 // -----------------------------------------------------------------------------

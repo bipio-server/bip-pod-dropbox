@@ -138,11 +138,20 @@
                "type": "string",
            	   "title": "Mime Type"
           	}
-        }
+        }, 
+        "disposition": [
+        	"path",
+        	"name",
+        	"humanSize",
+        	"mimeType"
+        	
+        ]
       },
       "imports": {
         "properties": {
         }
+        ,
+        "disposition": []
       }
     },
     "save_file": {

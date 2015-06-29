@@ -34,13 +34,6 @@ SaveFile.prototype.invoke = function(imports, channel, sysImports, contentParts,
         $resource = this.$resource,
         log = this.$resource.log;
 
-    log('Invoking ', channel);
-    config = channel.getConfig();
-
-    if (config.base_dir) {
-        dirPfx = config.base_dir;
-    }
-
     if (imports.base_dir) {
         dirPfx += '/' + imports.base_dir
     }
@@ -76,7 +69,7 @@ SaveFile.prototype.invoke = function(imports, channel, sysImports, contentParts,
                                     }
 
                                     // skip if found
-                                    if (!found || $resource.helper.isTruthy(channel.config.overwrite)) {
+                                    if (!found || $resource.helper.isTruthy(imports.overwrite)) {
                                         $resource.file.get(fileContext, function(err, fileStruct, readStream) {
                                             if (err) {
                                                 next(err);

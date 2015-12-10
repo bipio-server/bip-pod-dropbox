@@ -37,5 +37,9 @@ Dropbox.getClient = function(sysImports) {
     return client;
 }
 
+Dropbox.profileReprOAuth = function(profile) {
+  return profile.display_name;
+}
+
 // -----------------------------------------------------------------------------
 module.exports = Dropbox;

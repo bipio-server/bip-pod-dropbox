@@ -1,7 +1,7 @@
 {
   "name": "bip-pod-dropbox",
   "author": "Michael Pearson",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "description": "Dropbox Pod for Bipio",
   "keywords": [
     "bip",
@@ -16,12 +16,7 @@
   "bugs": {
     "url": "http://github.com/bipio-server/bip-pod-dropbox/issues"
   },
-  "licenses": [
-    {
-      "type": "GNU GPLv3",
-      "url": "http://www.gnu.org/copyleft/gpl.html"
-    }
-  ],
+  "license": "Apache-2.0",
   "main": ".",
   "dependencies": {
     "pkginfo": "0.2.x",
